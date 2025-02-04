@@ -17,18 +17,21 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.kafka.test.context.EmbeddedKafka;
 
 import com.tradestore.dbstore.IStoreInterface;
 import com.tradestore.domain.Trade;
 
 @SpringBootTest
+@EmbeddedKafka(partitions = 1, brokerProperties = { "listeners=PLAINTEXT://localhost:9092", "port=9092" })
+
 class TradeListenerTest {
 	
 	@Autowired
 	TradeListener tradeListener;
 	
 	@Autowired
-	@Qualifier("mongoStore")
+	@Qualifier("postgresStore")
 	IStoreInterface storeInterface;
 	
 	@Autowired

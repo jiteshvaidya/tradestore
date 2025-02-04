@@ -15,12 +15,13 @@ import org.springframework.stereotype.Repository;
 import com.tradestore.domain.Trade;
 import com.tradestore.util.TradeStoreDateUtil;
 
-@Repository
 public class PostgresStore implements IStoreInterface{
 	
-	@Autowired
 	private JdbcTemplate jdbcTemplate;
-
+	
+	public PostgresStore (JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
 	@Override
 	public Integer getMaxVersion(String tradeId) {
 		

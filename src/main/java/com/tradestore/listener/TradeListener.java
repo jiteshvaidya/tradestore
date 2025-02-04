@@ -1,10 +1,6 @@
 package com.tradestore.listener;
 
-import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.slf4j.Logger;
@@ -23,7 +19,7 @@ public class TradeListener {
 	private final Logger logger = LoggerFactory.getLogger(TradeListener.class);
 	
 	@Autowired
-	@Qualifier("mongoStore")
+	@Qualifier("postgresStore")
 	private IStoreInterface iStoreInterface;
 	
 	
@@ -36,7 +32,9 @@ public class TradeListener {
 		assert trade.getTradeId() != null : "Trade ID can not be null";
 		assert trade.getMaturityDate() != null : "Maturity Date cannot be null";
 		assert !trade.getMaturityDate().before(TradeStoreDateUtil.getTodaysDateWithoutTimePart()) : "Maturity Date should be greater than today";
-		
+		if (trade.getCreatedDate() == null) {
+			trade.setCreatedDate(TradeStoreDateUtil.getTodaysDateWithoutTimePart());
+		}
 		ReentrantLock lock = tradeIdLockMap.putIfAbsent(trade.getTradeId(), new ReentrantLock());
 		lock = tradeIdLockMap.get(trade.getTradeId());
 		lock.lock();

@@ -1,9 +1,5 @@
 package com.tradestore.dbstore;
 
-import java.util.Calendar;
-import java.util.Date;
-
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -12,18 +8,15 @@ import org.springframework.data.mongodb.core.index.Index;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.stereotype.Repository;
 
 import com.mongodb.client.result.UpdateResult;
 import com.tradestore.domain.Trade;
 import com.tradestore.util.TradeStoreDateUtil;
 
-@Repository
 public class MongoStore implements IStoreInterface{
 
 	private MongoTemplate mongoTemplate;
 	
-	@Autowired
 	public MongoStore(MongoTemplate mongoTemplate) {
 		this.mongoTemplate = mongoTemplate;
 		this.mongoTemplate.indexOps(Trade.class).ensureIndex(new Index().on("tradeId", Direction.ASC).on("version", Direction.ASC).unique());
