@@ -1,0 +1,17 @@
+spring:
+  kafka:
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
+  datasource: 
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: dbuser
+    password: dbuser
+  liquibase:
+    change-log: classpath:db/changelog/master.xml
+  data.mongodb.uri: mongodb://localhost:27017/trade
+  quartz:
+    job-store-type: "jdbc"
+    jdbc:
+      initialize-schema: "always"
