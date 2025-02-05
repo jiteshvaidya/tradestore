@@ -1,8 +1,11 @@
 # tradestore using#
 
-# Kafka for messagin
-# Postgres as RDBMS
-# Mongod as the no sql db
+# Kafka for Messaging
+# Postgresql as relational data store
+# Mongodb as the no sql data store
 # Quartz for scheduling jobs
+
+
+
 
 
