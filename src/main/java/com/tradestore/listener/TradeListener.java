@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tradestore.dbstore.IStoreInterface;
 import com.tradestore.domain.Trade;
@@ -27,6 +28,7 @@ public class TradeListener {
 	private final ConcurrentHashMap<String, ReentrantLock> tradeIdLockMap = new ConcurrentHashMap<String, ReentrantLock>();
 	
 	@KafkaListener(id = "tradestore", topics = "trade")
+	@Transactional
 	public void listen(Trade trade) {
 		logger.debug("Received: " + trade);
 		assert trade.getTradeId() != null : "Trade ID can not be null";
