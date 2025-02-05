@@ -46,6 +46,7 @@ public class TradeListener {
 				iStoreInterface.insertTrade(trade);
 			}else {
 				if (max.intValue() > trade.getVersion()) {
+					logger.error("Higher version already processed. tradeId={} version={}", trade.getTradeId() , trade.getVersion());
 					throw new RuntimeException("Higher version already processed");
 				}
 				else {
@@ -57,7 +58,7 @@ public class TradeListener {
 			lock.unlock();
 		}
 		
-		
+		// Maybe its possible to optimize by maintaining the last version processed in the cache
 //		AtomicInteger atomicInteger = tradeVersion.get(trade.getVersion());
 //		if (atomicInteger == null) { // If not in concurrentMap  then check in DB
 //			Integer max = iStoreInterface.getMaxVersion(trade.getTradeId());

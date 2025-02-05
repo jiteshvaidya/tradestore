@@ -63,6 +63,7 @@ class ApplicationTest {
 		this.template.send("trade", createTrade("IT-1", 2));
 		this.template.send("trade", createTrade("IT-2", 2));
 		this.template.send("trade", createTrade("IT-2", 1));
+		this.template.send("trade", createTrade("IT-2", 3));
 		try {
 			Thread.sleep(10000);
 		} catch (InterruptedException e) {
@@ -70,7 +71,7 @@ class ApplicationTest {
 			e.printStackTrace();
 		}
 		assertEquals(2,  storeInterface.getMaxVersion("IT-1"));
-		assertEquals(2,  storeInterface.getMaxVersion("IT-2"));
+		assertEquals(3,  storeInterface.getMaxVersion("IT-2"));
 		
 	}
 	
