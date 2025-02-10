@@ -25,10 +25,10 @@ public class TradeController {
 	public void sendFoo(@RequestBody Trade trade) {
 		
 		TradeValidationUtil.validateTrade(trade);
-		// trade is already validated based on regex 
+		// trade is already validated based on regex but the scanner picked it so addeding
 		String sanitizedTradeId = trade.getTradeId().replace("\n", "").replace("\r", "");
 		trade.setTradeId(sanitizedTradeId);
-		logger.info("sending trade id ={} , version ={}", trade.getTradeId(), trade.getVersion());
+		logger.info("sending trade id ={} , version ={}", sanitizedTradeId, trade.getVersion());
 		this.template.send("trade", trade);
 	}
 
