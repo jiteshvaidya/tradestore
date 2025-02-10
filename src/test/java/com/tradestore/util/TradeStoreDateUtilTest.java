@@ -2,6 +2,7 @@ package com.tradestore.util;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import org.junit.jupiter.api.AfterAll;
@@ -31,10 +32,12 @@ class TradeStoreDateUtilTest {
 	@Test
 	void testGetTodaysDateWithoutTimePart() {
 		Date todaysDateWithoutTimePart = TradeStoreDateUtil.getTodaysDateWithoutTimePart();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(todaysDateWithoutTimePart);
 		
-		assertEquals(0,  todaysDateWithoutTimePart.getHours());
-		assertEquals(0,  todaysDateWithoutTimePart.getMinutes());
-		assertEquals(0,  todaysDateWithoutTimePart.getSeconds());
+		assertEquals(0,  cal.get(Calendar.HOUR_OF_DAY));
+		assertEquals(0,  cal.get(Calendar.MINUTE));
+		assertEquals(0,  cal.get(Calendar.SECOND));
 	}
 
 }

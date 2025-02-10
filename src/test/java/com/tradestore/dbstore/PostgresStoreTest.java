@@ -84,6 +84,9 @@ class PostgresStoreTest {
 	void testInsertTradeDuplicateException() {
     	postgresStore.insertTrade(createTrade("test-t5", 1));
 		Exception exception = assertThrows(DuplicateKeyException.class, () -> postgresStore.insertTrade(createTrade("test-t5", 1)));
+		
+		assertEquals(exception.getClass(), DuplicateKeyException.class);
+
 	}
 
     

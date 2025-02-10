@@ -85,6 +85,7 @@ class MongoStoreTest {
 	void testInsertTradeDuplicateException() {
     	mongoStore.insertTrade(createTrade("test-t5", 1));
 		Exception exception = assertThrows(DuplicateKeyException.class, () -> mongoStore.insertTrade(createTrade("test-t5", 1)));
+		assertEquals(DuplicateKeyException.class, exception.getClass());
 	}
 
     
