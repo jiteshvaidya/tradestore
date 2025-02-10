@@ -32,6 +32,7 @@ public class TradeListener {
 		assert trade.getTradeId() != null : "Trade ID can not be null";
 		assert trade.getMaturityDate() != null : "Maturity Date cannot be null";
 		assert !trade.getMaturityDate().before(TradeStoreDateUtil.getTodaysDateWithoutTimePart()) : "Maturity Date should be greater than today";
+		assert trade.getTradeId().matches("^[a-zA-Z0-9_-]*$") : "Trade ID can only be aphanumeric";
 		if (trade.getCreatedDate() == null) {
 			trade.setCreatedDate(TradeStoreDateUtil.getTodaysDateWithoutTimePart());
 		}

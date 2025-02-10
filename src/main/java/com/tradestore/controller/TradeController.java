@@ -25,7 +25,8 @@ public class TradeController {
 		
 		assert trade.getTradeId() != null : "Trade ID cannot be null";
 		assert trade.getMaturityDate() != null : "Maturity Date cannot be null";
-		
+		assert trade.getTradeId().matches("^[a-zA-Z0-9_-]*$") : "Trade ID can only be aphanumeric";
+
 		logger.info("sending trade id ={} , version ={}", trade.getTradeId(), trade.getVersion());
 		this.template.send("trade", trade);
 	}
