@@ -68,7 +68,7 @@ class IntegrationTestNoSql {
 		this.template.send("trade", createTrade("ITNS-2", 1));
 		this.template.send("trade", createTrade("ITNS-2", 3));
 		try {
-			Thread.sleep(40000);
+			Thread.sleep(10000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -66,7 +66,7 @@ class IntegrationTestSql {
 		this.template.send("trade", createTrade("ITS-2", 1));
 		this.template.send("trade", createTrade("ITS-2", 3));
 		try {
-			Thread.sleep(30000);
+			Thread.sleep(10000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

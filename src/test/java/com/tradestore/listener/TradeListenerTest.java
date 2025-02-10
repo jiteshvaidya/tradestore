@@ -58,14 +58,14 @@ class TradeListenerTest {
 
 	@Test
 	void testListenTradeIdNull() {
-		AssertionError assertionError = assertThrows(AssertionError.class, () -> tradeListener.listen(new Trade()));
+		IllegalArgumentException assertionError = assertThrows(IllegalArgumentException.class, () -> tradeListener.listen(new Trade()));
 		assertEquals("Trade ID can not be null", assertionError.getMessage());
 	}
 	@Test
 	void testListenMaturityDateNull() {
 		Trade trade = new Trade();
 		trade.setTradeId("fdds");
-		AssertionError assertionError = assertThrows(AssertionError.class, () -> tradeListener.listen(trade));
+		IllegalArgumentException assertionError = assertThrows(IllegalArgumentException.class, () -> tradeListener.listen(trade));
 		assertEquals("Maturity Date cannot be null", assertionError.getMessage());
 	}
 	@Test
@@ -75,7 +75,7 @@ class TradeListenerTest {
 		Calendar instance = Calendar.getInstance();
 		instance.add(Calendar.DAY_OF_MONTH, +1);
 		trade.setMaturityDate(instance.getTime());
-		AssertionError assertionError = assertThrows(AssertionError.class, () -> tradeListener.listen(trade));
+		IllegalArgumentException assertionError = assertThrows(IllegalArgumentException.class, () -> tradeListener.listen(trade));
 		assertEquals("Trade ID can only be aphanumeric", assertionError.getMessage());
 	}
 
@@ -87,7 +87,7 @@ class TradeListenerTest {
 		Calendar instance = Calendar.getInstance();
 		instance.add(Calendar.DAY_OF_MONTH, -1);
 		trade.setMaturityDate(instance.getTime());
-		AssertionError assertionError = assertThrows(AssertionError.class, () -> tradeListener.listen(trade));
+		IllegalArgumentException assertionError = assertThrows(IllegalArgumentException.class, () -> tradeListener.listen(trade));
 		assertEquals("Maturity Date should be greater than today", assertionError.getMessage());
 	}
 

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tradestore.domain.Trade;
+import com.tradestore.util.TradeValidationUtil;
 /**
  * Utility controller to send message to kafka topic.
  * This can also server as a example of different mode of transmission
@@ -23,10 +24,7 @@ public class TradeController {
 	@PostMapping(path = "/send", consumes = "application/json")
 	public void sendFoo(@RequestBody Trade trade) {
 		
-		assert trade.getTradeId() != null : "Trade ID cannot be null";
-		assert trade.getMaturityDate() != null : "Maturity Date cannot be null";
-		assert trade.getTradeId().matches("^[a-zA-Z0-9_-]*$") : "Trade ID can only be aphanumeric";
-
+		TradeValidationUtil.validateTrade(trade);
 		logger.info("sending trade id ={} , version ={}", trade.getTradeId(), trade.getVersion());
 		this.template.send("trade", trade);
 	}

@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.tradestore.dbstore.IStoreInterface;
 import com.tradestore.domain.Trade;
 import com.tradestore.util.TradeStoreDateUtil;
+import com.tradestore.util.TradeValidationUtil;
 
 @Component
 public class TradeListener {
@@ -29,10 +30,7 @@ public class TradeListener {
 	@Transactional
 	public void listen(Trade trade) {
 		logger.info("Received: " + trade);
-		assert trade.getTradeId() != null : "Trade ID can not be null";
-		assert trade.getMaturityDate() != null : "Maturity Date cannot be null";
-		assert !trade.getMaturityDate().before(TradeStoreDateUtil.getTodaysDateWithoutTimePart()) : "Maturity Date should be greater than today";
-		assert trade.getTradeId().matches("^[a-zA-Z0-9_-]*$") : "Trade ID can only be aphanumeric";
+		TradeValidationUtil.validateTrade(trade);
 		if (trade.getCreatedDate() == null) {
 			trade.setCreatedDate(TradeStoreDateUtil.getTodaysDateWithoutTimePart());
 		}
