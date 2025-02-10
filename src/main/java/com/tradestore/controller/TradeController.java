@@ -25,6 +25,9 @@ public class TradeController {
 	public void sendFoo(@RequestBody Trade trade) {
 		
 		TradeValidationUtil.validateTrade(trade);
+		// trade is already validated based on regex 
+		String sanitizedTradeId = trade.getTradeId().replace("\n", "").replace("\r", "");
+		trade.setTradeId(sanitizedTradeId);
 		logger.info("sending trade id ={} , version ={}", trade.getTradeId(), trade.getVersion());
 		this.template.send("trade", trade);
 	}
