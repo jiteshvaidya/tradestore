@@ -17,11 +17,15 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.kafka.test.context.EmbeddedKafka;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.TestPropertySource;
 
+import com.tradestore.config.StoreConfigTest;
 import com.tradestore.domain.Trade;
 
-@SpringBootTest
-@EmbeddedKafka(partitions = 1, brokerProperties = { "listeners=PLAINTEXT://localhost:9092", "port=9092" })
+@SpringBootTest( classes = {StoreConfigTest.class})
+@TestPropertySource(properties="store-type=no-sql")
+@DirtiesContext
 class MongoStoreTest {
 	
 

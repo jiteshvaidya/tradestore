@@ -18,13 +18,14 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.kafka.test.context.EmbeddedKafka;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.TestPropertySource;
 
 import com.tradestore.dbstore.IStoreInterface;
 import com.tradestore.domain.Trade;
 
 @SpringBootTest
-@EmbeddedKafka(partitions = 1, brokerProperties = { "listeners=PLAINTEXT://localhost:9092", "port=9092" })
-
+@DirtiesContext
 class TradeListenerTest {
 	
 	@Autowired
@@ -34,8 +35,6 @@ class TradeListenerTest {
 	@Qualifier("postgresStore")
 	IStoreInterface storeInterface;
 	
-	@Autowired
-	MongoTemplate mongoTemplate;
 	
 	@Autowired
 	JdbcTemplate jdbcTemplate;
@@ -50,7 +49,6 @@ class TradeListenerTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
-		mongoTemplate.remove(new Query(), Trade.class);
 		jdbcTemplate.execute("truncate table Trade");
 	}
 

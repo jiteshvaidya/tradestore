@@ -7,10 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
-import org.springframework.data.mongodb.MongoDatabaseFactory;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaOperations;
 import org.springframework.kafka.listener.CommonErrorHandler;
 import org.springframework.kafka.listener.DeadLetterPublishingRecoverer;
@@ -18,10 +14,6 @@ import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.support.converter.JsonMessageConverter;
 import org.springframework.kafka.support.converter.RecordMessageConverter;
 import org.springframework.util.backoff.FixedBackOff;
-
-import com.tradestore.dbstore.MongoStore;
-import com.tradestore.dbstore.PostgresStore;
-import com.tradestore.domain.Trade;
 
 @Configuration
 public class StroreConfig {
@@ -50,18 +42,10 @@ public class StroreConfig {
 		return new NewTopic("trade", 1, (short) 1);
 	}
 	
-	@Bean
-	public MongoStore mongoStore(MongoTemplate mongoTemplate) {
-		return new MongoStore(mongoTemplate);
-		
-	}
 	
-	@Bean
-	public PostgresStore postgresStore(JdbcTemplate jdbcTemplate) {
-		return new PostgresStore(jdbcTemplate);
-		
-	}
 	
+	
+
 
 	
 

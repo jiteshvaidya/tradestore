@@ -12,17 +12,24 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.test.context.EmbeddedKafka;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.TestPropertySource;
 
+import com.tradestore.config.StoreConfigTest;
 import com.tradestore.dbstore.IStoreInterface;
 import com.tradestore.domain.Trade;
-@SpringBootTest
-@EmbeddedKafka(partitions = 1, brokerProperties = { "listeners=PLAINTEXT://localhost:9092", "port=9092" })
-class ApplicationTest {
+import com.tradestore.listener.TradeListener;
+@SpringBootTest()
+@TestPropertySource(properties="store-type=no-sql")
+//@EmbeddedKafka(partitions = 1, brokerProperties = { "listeners=PLAINTEXT://localhost:9092", "port=9092" })
+@DirtiesContext
+class IntegrationTestNoSql {
 	
 	
 	@Autowired
@@ -32,11 +39,10 @@ class ApplicationTest {
 	MongoTemplate mongoTemplate;
 	
 	@Autowired
-	JdbcTemplate jdbcTemplate;
+	IStoreInterface storeInterface;
 	
 	@Autowired
-	@Qualifier("postgresStore")
-	IStoreInterface storeInterface;
+	TradeListener tradeListener;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -49,7 +55,6 @@ class ApplicationTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		mongoTemplate.remove(new Query(), Trade.class);
-		jdbcTemplate.execute("truncate table Trade");
 	}
 
 	@AfterEach
@@ -58,20 +63,18 @@ class ApplicationTest {
 
 	@Test
 	void IntegrationTest() {
-		this.template.send("trade", createTrade("IT-1", 1));
-		this.template.send("trade", createTrade("IT-1", 2));
-		this.template.send("trade", createTrade("IT-1", 2));
-		this.template.send("trade", createTrade("IT-2", 2));
-		this.template.send("trade", createTrade("IT-2", 1));
-		this.template.send("trade", createTrade("IT-2", 3));
+		this.template.send("trade", createTrade("ITNS-1", 2));
+		this.template.send("trade", createTrade("ITNS-2", 2));
+		this.template.send("trade", createTrade("ITNS-2", 1));
+		this.template.send("trade", createTrade("ITNS-2", 3));
 		try {
-			Thread.sleep(10000);
+			Thread.sleep(40000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		assertEquals(2,  storeInterface.getMaxVersion("IT-1"));
-		assertEquals(3,  storeInterface.getMaxVersion("IT-2"));
+		assertEquals(2,  storeInterface.getMaxVersion("ITNS-1"));
+		assertEquals(3,  storeInterface.getMaxVersion("ITNS-2"));
 		
 	}
 	

@@ -1,18 +1,12 @@
 package com.tradestore.config;
 
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.context.annotation.Import;
 
-import com.tradestore.dbstore.MongoStore;
+import com.tradestore.Application;
 
 @TestConfiguration
+@Import(Application.class)
 public class StoreConfigTest {
 	
-    
-	@Bean
-	public MongoStore mongoStore(MongoTemplate mongoTemplate) {
-		return new MongoStore(mongoTemplate);
-		
-	}
 }

@@ -18,7 +18,7 @@ public class QuartzConfig {
 	public JobDetail maturityDateExpiryJobDetail() {
 		return JobBuilder.newJob(MaturityDateExpiryJob.class).withIdentity("MaturityDateExpiryJob").storeDurably().build();
 	}
-	
+	@Bean
 	public Trigger maturityDateExpiryJobTrigger() {
 		CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule("0 15 0 * * ?"); // every day at 00:15 am
 		return TriggerBuilder.newTrigger().forJob(maturityDateExpiryJobDetail()).withIdentity("MaturityDateExpiryJobTrigger")

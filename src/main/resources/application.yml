@@ -1,3 +1,5 @@
+store-type: sql
+
 spring:
   kafka:
     producer:
@@ -8,10 +10,16 @@ spring:
     url: jdbc:postgresql://localhost:5432/postgres
     username: dbuser
     password: dbuser
+    hikari:
+      connection-timeout: 30000
+      maximum-pool-size: 10
   liquibase:
     change-log: classpath:db/changelog/master.xml
   data.mongodb.uri: mongodb://localhost:27017/trade
   quartz:
-    job-store-type: "jdbc"
-    jdbc:
-      initialize-schema: "always"
+    job-store-type: "memory"
+#   In memory store is enough if we are going with single instance 
+#	job-store-type: "jdbc"
+#    jdbc:
+#      initialize-schema: "always"
+#    properties.org.quartz.jobStore.driverDelegateClass: org.quartz.impl.jdbcjobstore.PostgreSQLDelegate

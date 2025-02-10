@@ -6,7 +6,6 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +19,6 @@ public class TradeListener {
 	private final Logger logger = LoggerFactory.getLogger(TradeListener.class);
 	
 	@Autowired
-	@Qualifier("postgresStore")
 	private IStoreInterface iStoreInterface;
 	
 	
@@ -30,7 +28,7 @@ public class TradeListener {
 	@KafkaListener(id = "tradestore", topics = "trade")
 	@Transactional
 	public void listen(Trade trade) {
-		logger.debug("Received: " + trade);
+		logger.info("Received: " + trade);
 		assert trade.getTradeId() != null : "Trade ID can not be null";
 		assert trade.getMaturityDate() != null : "Maturity Date cannot be null";
 		assert !trade.getMaturityDate().before(TradeStoreDateUtil.getTodaysDateWithoutTimePart()) : "Maturity Date should be greater than today";
@@ -58,7 +56,7 @@ public class TradeListener {
 			lock.unlock();
 		}
 		
-		// Maybe its possible to optimize by maintaining the last version processed in the cache
+		
 //		AtomicInteger atomicInteger = tradeVersion.get(trade.getVersion());
 //		if (atomicInteger == null) { // If not in concurrentMap  then check in DB
 //			Integer max = iStoreInterface.getMaxVersion(trade.getTradeId());
